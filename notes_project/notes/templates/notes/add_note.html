@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Note</title>
+  </head>
+  <body>
+    <h1>Add a New Note</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <label>Title:</label>
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        required
+      /><br /><br />
+
+      <label>Content:</label>
+      <textarea name="content" placeholder="Content" required></textarea
+      ><br /><br />
+
+      <label>Category (optional):</label>
+      <input type="text" name="category" placeholder="Category" /><br /><br />
+
+      <button type="submit">Save Note</button>
+    </form>
+    <a href="{% url 'home' %}">Back</a>
+  </body>
+</html>

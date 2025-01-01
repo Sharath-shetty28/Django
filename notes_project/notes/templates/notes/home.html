@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Notes</title>
+</head>
+<body>
+    <h1>My Notes</h1>
+    <a href="{% url 'add_note' %}">Add New Note</a>
+    <ul>
+        {% for note in notes %}
+        <li>
+            <h2>{{ note.title }}</h2>
+            <p>{{ note.content }}</p>
+            {% if note.category %}
+            <small>Category: {{ note.category }}</small>
+            {% endif %}
+            <br>
+            <a href="{% url 'edit_note' note.id %}">Edit</a>
+            <a href="{% url 'delete_note' note.id %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

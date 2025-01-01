@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word to PDF Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .file-list {
+        margin: 10px 0;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .file-item {
+        display: flex;
+        align-items: center;
+        margin: 5px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: #f9f9f9;
+        position: relative;
+      }
+      .file-item img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      .file-item span {
+        font-size: 14px;
+        color: #333;
+      }
+      .file-item button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        color: #f00;
+        cursor: pointer;
+      }
+      button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Word to PDF Converter</h1>
+    <form id="word-form" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input
+        type="file"
+        id="file-input"
+        name="word_files"
+        accept=".docx"
+        required
+      />
+      <button type="button" id="add-file" style="display: none">
+        Add Another File
+      </button>
+      <div class="file-list" id="file-list"></div>
+      <button type="submit" id="convert-btn">Convert to PDF</button>
+    </form>
+    <div id="download-section" style="display: none">
+      <h2>Conversion Complete!</h2>
+      <a id="download-link" href="#" download="">Download PDF</a>
+      <button type="button" id="reset-btn">Reset</button>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById("file-input");
+      const addFileButton = document.getElementById("add-file");
+      const fileList = document.getElementById("file-list");
+      const convertButton = document.getElementById("convert-btn");
+      const downloadSection = document.getElementById("download-section");
+      const downloadLink = document.getElementById("download-link");
+      const resetButton = document.getElementById("reset-btn");
+      const form = document.getElementById("word-form");
+      convertButton.style.display = "none";
+
+      let selectedFiles = [];
+      let firstFileName = "";
+
+      function addFileToList(fileName) {
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+
+        const fileIcon = document.createElement("img");
+        fileIcon.src =
+          "https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg"; // Example image icon
+        fileIcon.alt = "Image Icon";
+
+        const fileNameSpan = document.createElement("span");
+        fileNameSpan.textContent = fileName;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "❌";
+        removeButton.addEventListener("click", () => {
+          removeFile(fileName, fileItem);
+        });
+
+        fileItem.appendChild(fileIcon);
+        fileItem.appendChild(fileNameSpan);
+        fileItem.appendChild(removeButton);
+        fileList.appendChild(fileItem);
+      }
+
+      function removeFile(fileName, fileItem) {
+        selectedFiles = selectedFiles.filter((file) => file.name !== fileName);
+        fileList.removeChild(fileItem);
+        updateConvertButtonState();
+      }
+      function updateConvertButtonState() {
+        if (selectedFiles.length >= 1) {
+          convertButton.style.display = "flex";
+        } else {
+          convertButton.style.display = "none";
+        }
+      }
+
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          const file = e.target.files[0];
+
+          if (selectedFiles.find((f) => f.name === file.name)) {
+            alert("This file is already selected!");
+            return;
+          }
+
+          selectedFiles.push(file);
+          if (!firstFileName) {
+            firstFileName = file.name.split(".")[0];
+          }
+          addFileToList(file.name);
+
+          addFileButton.style.display = "inline";
+          fileInput.style.display = "none";
+          updateConvertButtonState();
+        }
+      });
+
+      addFileButton.addEventListener("click", () => {
+        const newInput = document.createElement("input");
+        newInput.type = "file";
+        newInput.name = "word_files";
+        newInput.accept = ".docx";
+        newInput.required = true;
+
+        newInput.addEventListener("change", (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+
+            if (selectedFiles.find((f) => f.name === file.name)) {
+              alert("This file is already selected!");
+              return;
+            }
+
+            selectedFiles.push(file);
+            addFileToList(file.name);
+            updateConvertButtonState();
+          }
+        });
+
+        newInput.click();
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("word_files", fileInput.files[0]);
+
+        const csrfToken = document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value;
+        const response = await fetch("/word/", {
+          method: "POST",
+          headers: { "X-CSRFToken": csrfToken },
+          body: formData,
+        });
+
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          downloadLink.href = url;
+          downloadLink.download = "converted_files.pdf";
+          downloadSection.style.display = "block";
+        } else {
+          alert("Error converting file.");
+        }
+      });
+
+      resetButton.addEventListener("click", () => {
+        form.reset();
+        fileList.innerHTML = "";
+        downloadSection.style.display = "none";
+        fileInput.style.display = "inline";
+        addFileButton.style.display = "none";
+        convertButton.style.display = "none";
+        selectedFiles = [];
+        firstFileName = "";
+      });
+    </script>
+  </body>
+</html>

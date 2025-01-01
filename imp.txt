@@ -1,0 +1,97 @@
+https://chatgpt.com/c/67663364-1c8c-8000-ba06-d5983b8a1426
+
+--->create a project setup
+django-admin startproject project_name
+cd project_name
+
+-->migrate
+python manage.py makemigrations
+python manage.py migrate 
+python manage.py runserver
+
+
+-->create app
+
+//like home ,contact
+python manage.py startapp app_name 
+
+INSTALLED_APPS = [
+    ...
+    'app_name',
+]
+
+
+-->url dispacthing
+
+-->variable sending in templates
+
+def about(request):
+context ={
+    "var1":"hello1 ",
+    "var2" :"hello2"
+}
+
+return render(request,"about.html",context)
+
+about.html 
+
+the valuse is {{var1}}
+
+
+
+---->
+
+{% extends 'base.html' %}:
+Inherits the structure from base.html.
+{% block title %}:
+Overrides the title section defined in the parent template.
+{% block content %}:
+Replaces the content area in the parent template.
+
+
+1..{% extends 'base.html' %}
+
+2..{% block title %}About Us{% endblock %}
+
+3..{% block content %}
+<h1>About Us</h1>
+<p>We are a company dedicated to providing excellent services and solutions.</p>
+{% endblock %}
+
+
+-->form submititng
+{% csrf_token %}
+
+
+-->migrate
+python manage.py makemigrations
+python manage.py migrate 
+
+
+-->orm
+To retrieve data from the database using Django's python manage.py shell, you can use the Django ORM (Object-Relational Mapping). Here’s a step-by-step guide:
+
+python manage.py shell
+
+from home.models import Contact
+
+contacts = Contact.objects.all()
+Contact.objects.all()[0].email
+Contact.objects.all().first,last,startwidth
+
+
+
+<QuerySet [<Contact: Contact object (4)>, <Contact: Contact object (5)>, <Contact: Contact object (6)>]>
+
+
+
+--->allowed host
+
+-->db user
+> python manage.py createsuperuser
+
+
+--->css
+{% load static  %}
+
+href={% static  'style.css' %}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Merger</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f9;
+      }
+
+      .container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      #file-list {
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .file-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .file-item img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+
+      .file-item button {
+        margin-left: auto;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: red;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Word Document Merger</h1>
+      <form id="word-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input
+          type="file"
+          id="file-input"
+          name="words"
+          accept=".docx"
+          required
+        />
+        <button type="button" id="add-file" style="display: none">
+          Add Another File
+        </button>
+        <div id="file-list" class="file-list"></div>
+        <button type="submit" id="merge-btn" style="display: none">
+          Merge Word Files
+        </button>
+      </form>
+      <div id="download-section" style="display: none">
+        <h2>Merge Complete!</h2>
+        <a id="download-link" href="#" download="">Download Merged File</a>
+        <button type="button" id="reset-btn">Reset</button>
+      </div>
+    </div>
+    <script>
+      const fileInput = document.getElementById("file-input");
+      const addFileButton = document.getElementById("add-file");
+      const fileList = document.getElementById("file-list");
+      const mergeButton = document.getElementById("merge-btn");
+      const downloadSection = document.getElementById("download-section");
+      const downloadLink = document.getElementById("download-link");
+      const resetButton = document.getElementById("reset-btn");
+      const form = document.getElementById("word-form");
+
+      let selectedFiles = []; // Array to track selected files
+      let firstFileName = ""; // To store the name of the first file
+
+      // Add file to the list with a remove button
+      function addFileToList(fileName) {
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+
+        const fileIcon = document.createElement("img");
+        fileIcon.src =
+          "https://upload.wikimedia.org/wikipedia/commons/f/fb/.docx_icon.svg";
+        fileIcon.alt = "Word Icon";
+
+        const fileNameSpan = document.createElement("span");
+        fileNameSpan.textContent = fileName;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "❌";
+        removeButton.addEventListener("click", () => {
+          removeFile(fileName, fileItem);
+        });
+
+        fileItem.appendChild(fileIcon);
+        fileItem.appendChild(fileNameSpan);
+        fileItem.appendChild(removeButton);
+        fileList.appendChild(fileItem);
+      }
+
+      // Remove file from the list
+      function removeFile(fileName, fileItem) {
+        selectedFiles = selectedFiles.filter((file) => file.name !== fileName);
+        fileList.removeChild(fileItem);
+
+        // Update button visibility
+        updateMergeButtonState();
+      }
+
+      // Update the state of the merge button
+      function updateMergeButtonState() {
+        // Show the merge button only if there are two or more files selected
+        mergeButton.style.display =
+          selectedFiles.length >= 2 ? "inline" : "none";
+      }
+
+      // Handle file selection
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          const file = e.target.files[0];
+
+          // Avoid duplicate files
+          if (selectedFiles.find((f) => f.name === file.name)) {
+            alert("This file is already selected!");
+            return;
+          }
+
+          selectedFiles.push(file);
+
+          if (!firstFileName) {
+            firstFileName = file.name.split(".")[0]; // Store first file's name (without extension)
+          }
+
+          addFileToList(file.name);
+          addFileButton.style.display = "inline"; // Show the "Add Another File" button
+
+          // Hide the file input to allow adding files via the "Add Another File" button
+          fileInput.style.display = "none";
+          updateMergeButtonState();
+        }
+      });
+
+      // Add another file directly using the file input
+      addFileButton.addEventListener("click", () => {
+        const newInput = document.createElement("input");
+        newInput.type = "file";
+        newInput.name = "words";
+        newInput.accept = ".docx";
+        newInput.required = true;
+
+        newInput.addEventListener("change", (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+
+            // Avoid duplicate files
+            if (selectedFiles.find((f) => f.name === file.name)) {
+              alert("This file is already selected!");
+              return;
+            }
+
+            selectedFiles.push(file);
+            addFileToList(file.name);
+            updateMergeButtonState();
+          }
+        });
+
+        newInput.click();
+      });
+
+      // Handle form submission
+      form.addEventListener("submit", (e) => {
+        e.preventDefault(); // Prevent default form submission
+        const formData = new FormData();
+
+        selectedFiles.forEach((file) => formData.append("words", file));
+
+        const csrfToken = document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value;
+
+        fetch("/merge/word/", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.blob();
+            }
+            throw new Error("Failed to merge Word files.");
+          })
+          .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            const mergedFileName = `${firstFileName}_merged.docx`;
+            downloadLink.href = url;
+            downloadLink.download = mergedFileName;
+            downloadSection.style.display = "block";
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+
+      // Reset the form for a new operation
+      resetButton.addEventListener("click", () => {
+        form.reset();
+        fileList.innerHTML = "";
+        downloadSection.style.display = "none";
+        fileInput.style.display = "inline"; // Show the first file input again
+        addFileButton.style.display = "none";
+        mergeButton.style.display = "none"; // Hide merge button
+        selectedFiles = [];
+        firstFileName = "";
+      });
+    </script>
+  </body>
+</html>

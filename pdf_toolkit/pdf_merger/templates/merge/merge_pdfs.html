@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Merger</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .file-list {
+        margin: 10px 0;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .file-item {
+        display: flex;
+        align-items: center;
+        margin: 5px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: #f9f9f9;
+        position: relative;
+      }
+      .file-item img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      .file-item span {
+        font-size: 14px;
+        color: #333;
+      }
+      .file-item button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        color: #f00;
+        cursor: pointer;
+      }
+      button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Merge PDFs</h1>
+    <form id="pdf-form" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" id="file-input" name="pdfs" accept=".pdf" required />
+      <button type="button" id="add-file" style="display: none">
+        Add Another File
+      </button>
+      <div class="file-list" id="file-list"></div>
+      <button type="submit" id="merge-btn" style="display: none">
+        Merge PDFs
+      </button>
+    </form>
+    <div id="download-section" style="display: none">
+      <h2>Merge Complete!</h2>
+      <a id="download-link" href="#" download="">Download Merged PDF</a>
+      <button type="button" id="reset-btn">Reset</button>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById("file-input");
+      const addFileButton = document.getElementById("add-file");
+      const fileList = document.getElementById("file-list");
+      const mergeButton = document.getElementById("merge-btn");
+      const downloadSection = document.getElementById("download-section");
+      const downloadLink = document.getElementById("download-link");
+      const resetButton = document.getElementById("reset-btn");
+      const form = document.getElementById("pdf-form");
+
+      let selectedFiles = []; // Array to track selected files
+      let firstFileName = ""; // To store the name of the first file
+
+      // Add file to the list with a remove button
+      function addFileToList(fileName) {
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+
+        const fileIcon = document.createElement("img");
+        fileIcon.src =
+          "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"; // Example PDF icon
+        fileIcon.alt = "PDF Icon";
+
+        const fileNameSpan = document.createElement("span");
+        fileNameSpan.textContent = fileName;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "x";
+        removeButton.addEventListener("click", () => {
+          removeFile(fileName, fileItem);
+        });
+
+        fileItem.appendChild(fileIcon);
+        fileItem.appendChild(fileNameSpan);
+        fileItem.appendChild(removeButton);
+        fileList.appendChild(fileItem);
+      }
+
+      // Remove file from the list
+      function removeFile(fileName, fileItem) {
+        selectedFiles = selectedFiles.filter((file) => file.name !== fileName);
+        fileList.removeChild(fileItem);
+
+        // Update button visibility
+        updateMergeButtonState();
+      }
+
+      // Update the state of the merge button
+
+      // Update the state of the merge button
+      function updateMergeButtonState() {
+        // Show the merge button only if there are two or more files selected
+        mergeButton.style.display =
+          selectedFiles.length >= 2 ? "inline" : "none";
+      }
+
+      // Handle file selection
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          const file = e.target.files[0];
+
+          // Avoid duplicate files
+          if (selectedFiles.find((f) => f.name === file.name)) {
+            alert("This file is already selected!");
+            return;
+          }
+
+          selectedFiles.push(file);
+
+          if (!firstFileName) {
+            firstFileName = file.name.split(".")[0]; // Store first file's name (without extension)
+          }
+
+          addFileToList(file.name);
+          addFileButton.style.display = "inline"; // Show the "Add Another File" button
+
+        
+          fileInput.style.display = "none";
+          updateMergeButtonState();
+        }
+      });
+
+      // Add another file directly using the file input
+      addFileButton.addEventListener("click", () => {
+        const newInput = document.createElement("input");
+        newInput.type = "file";
+        newInput.name = "pdfs";
+        newInput.accept = ".pdf";
+        newInput.required = true;
+
+        newInput.addEventListener("change", (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+
+            // Avoid duplicate files
+            if (selectedFiles.find((f) => f.name === file.name)) {
+              alert("This file is already selected!");
+              return;
+            }
+
+            selectedFiles.push(file);
+            addFileToList(file.name);
+            updateMergeButtonState();
+          }
+        });
+
+        newInput.click();
+      });
+
+      // Handle form submission
+      form.addEventListener("submit", (e) => {
+        e.preventDefault(); // Prevent default form submission
+        const formData = new FormData();
+
+        selectedFiles.forEach((file) => formData.append("pdfs", file));
+
+        const csrfToken = document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value;
+
+        fetch("/merge/pdf/", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.blob();
+            }
+            throw new Error("Failed to merge PDFs.");
+          })
+          .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            const mergedFileName = `${firstFileName}_merged.pdf`;
+            downloadLink.href = url;
+            downloadLink.download = mergedFileName;
+            downloadSection.style.display = "block";
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      });
+
+      // Reset the form for a new operation
+      resetButton.addEventListener("click", () => {
+        form.reset();
+        fileList.innerHTML = "";
+        downloadSection.style.display = "none";
+        fileInput.style.display = "inline"; // Show the first file input again
+        addFileButton.style.display = "none";
+        mergeButton.style.display = "none";
+        selectedFiles = [];
+        firstFileName = "";
+      });
+    </script>
+  </body>
+</html>
