@@ -4,7 +4,7 @@ from PyPDF2 import PdfMerger
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'merge/index.html')
 
 def merge_pdfs(request):
     if request.method == "POST":

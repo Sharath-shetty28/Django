@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from pdf_merger.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+    path('', index ,name='index'),
     # Include URLs from pdf_merger
     path('merge/', include('pdf_merger.urls')),
 
