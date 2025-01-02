@@ -55,6 +55,110 @@
     />
   </head>
   <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark"
+      aria-label="Offcanvas navbar large"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          <img
+            src="https://svgmix.com/uploads/codicons/77a588-file-code.svg"
+            class="text-light"
+          />pdf_tollkit</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar2"
+          aria-controls="offcanvasNavbar2"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end text-bg-dark"
+          tabindex="-1"
+          id="offcanvasNavbar2"
+          aria-labelledby="offcanvasNavbar2Label"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbar2Label">
+              pdf_toolkit
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  merge
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="/merge/merge_pdfs"
+                      >pdf merge</a
+                    >
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/merge/merge_words"
+                      >word merge</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  converter
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      class="dropdown-item disabled"
+                      href="/converter/word_to_pdf"
+                      >word to pdf</a
+                    >
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/converter/img_to_pdf"
+                      >img to pdf</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <div class="d-flex mt-3 mt-lg-0">
+              <button class="btn btn-outline-success" type="submit">
+                share
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
     <h1>Word to PDF Converter</h1>
     <form id="word-form" method="post" enctype="multipart/form-data">
       {% csrf_token %}

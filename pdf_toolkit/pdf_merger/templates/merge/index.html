@@ -10,6 +10,11 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./static/style/style.css" />
   </head>
   <body>
     <nav
@@ -17,7 +22,7 @@
       aria-label="Offcanvas navbar large"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <img
             src="https://svgmix.com/uploads/codicons/77a588-file-code.svg"
             class="text-light"
@@ -89,19 +94,25 @@
                   converter
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">word to pdf</a></li>
+                  <li>
+                    <a class="dropdown-item" href="/converter/word_to_pdf"
+                      >word to pdf</a
+                    >
+                  </li>
                   <li>
                     <hr class="dropdown-divider" />
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">img to pdf</a>
+                    <a class="dropdown-item" href="/converter/img_to_pdf"
+                      >img to pdf</a
+                    >
                   </li>
                 </ul>
               </li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
               <button class="btn btn-outline-success" type="submit">
-                share
+                <i class="ri-share-line"></i>
               </button>
             </div>
           </div>
@@ -238,20 +249,22 @@
         <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
           <li class="ms-3">
             <a class="text-body-secondary" href="#"
-              ><svg class="bi" width="24" height="24">
-                <use xlink:href="#twitter"></use></svg
+              ><i class="ri-linkedin-box-line"></i
             ></a>
           </li>
           <li class="ms-3">
             <a class="text-body-secondary" href="#"
-              ><svg class="bi" width="24" height="24">
-                <use xlink:href="#instagram"></use></svg
+              ><i class="ri-mail-line"></i
             ></a>
           </li>
           <li class="ms-3">
             <a class="text-body-secondary" href="#"
-              ><svg class="bi" width="24" height="24">
-                <use xlink:href="#facebook"></use></svg
+              ><i class="ri-instagram-line"></i
+            ></a>
+          </li>
+          <li class="ms-3">
+            <a class="text-body-secondary" href="#"
+              ><i class="ri-github-fill"></i
             ></a>
           </li>
         </ul>
