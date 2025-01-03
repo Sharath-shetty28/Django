@@ -263,15 +263,22 @@
           body: formData,
         });
 
-        if (response.ok) {
-          const blob = await response.blob();
+        .then((response) => {
+          if (response.ok) {
+            return response.blob();
+          }
+          throw new Error("Failed to convert images to PDF.");
+        })
+        .then((blob) => {
           const url = URL.createObjectURL(blob);
+          const pdfFileName = `${firstFileName}_converted.pdf`;
           downloadLink.href = url;
-          downloadLink.download = "converted_files.pdf";
+          downloadLink.download = pdfFileName;
           downloadSection.style.display = "block";
-        } else {
-          alert("Error converting file.");
-        }
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
       });
 
       resetButton.addEventListener("click", () => {

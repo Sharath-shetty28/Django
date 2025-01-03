@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,7 +15,7 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./static/stylesheets/style.css" />
+    <link rel="stylesheet" href="{% static 'stylesheets/style.css' %}" />
   </head>
   <body>
     <nav
@@ -120,10 +121,10 @@
       </div>
     </nav>
 
-    <div class="container px-4 py-5" id="featured-3">
-      <h2 class="pb-2 border-bottom">Columns with icons</h2>
-      <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-        <div class="feature col">
+    <div class="container text-center px-4 py-5" id="featured-3">
+      <h2 class="pb-2 border-bottom">Merge PDF/Word File</h2>
+      <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+        <div class="feature col box1">
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
           >
@@ -131,16 +132,14 @@
               <use xlink:href="#collection"></use>
             </svg>
           </div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
+          <h3 class="fs-2 text-body-emphasis">Merge PDF</h3>
           <p>
-            Paragraph of text beneath the heading to explain the heading. We'll
-            add onto it with another sentence and probably just keep going until
-            we run out of words.
+            Merging PDFs combines multiple PDF files into a single document
+            while preserving their content and structure.
           </p>
-          <a href="#" class="icon-link">
-            Call to action
-            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-          </a>
+          <button>
+            <a href="/merge/merge_pdfs" class="text-decoration-none"> view </a>
+          </button>
         </div>
 
         <div class="feature col">
@@ -151,41 +150,20 @@
               <use xlink:href="#toggles2"></use>
             </svg>
           </div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
+          <h3 class="fs-2 text-body-emphasis">Merge Word</h3>
           <p>
-            Paragraph of text beneath the heading to explain the heading. We'll
-            add onto it with another sentence and probably just keep going until
-            we run out of words.
+            Merging Word documents combines multiple Word files into a single
+            document, maintaining formatting and content.
           </p>
-          <a href="#" class="icon-link">
-            Call to action
-            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-          </a>
+          <button>
+            <a href="/merge/merge_words" class="text-decoration-none"> view </a>
+          </button>
         </div>
       </div>
     </div>
-    <div class="container px-4 py-5" id="featured-3">
-      <h2 class="pb-2 border-bottom">Columns with icons</h2>
-      <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-        <div class="feature col">
-          <div
-            class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
-          >
-            <svg class="bi" width="1em" height="1em">
-              <use xlink:href="#collection"></use>
-            </svg>
-          </div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-          <p>
-            Paragraph of text beneath the heading to explain the heading. We'll
-            add onto it with another sentence and probably just keep going until
-            we run out of words.
-          </p>
-          <a href="#" class="icon-link">
-            Call to action
-            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-          </a>
-        </div>
+    <div class="container text-center px-4 py-5" id="featured-3">
+      <h2 class="pb-2 border-bottom">Convert Image/Word to PDF</h2>
+      <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
         <div class="feature col">
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
@@ -194,16 +172,16 @@
               <use xlink:href="#people-circle"></use>
             </svg>
           </div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
+          <h3 class="fs-2 text-body-emphasis">Word to PDF</h3>
           <p>
-            Paragraph of text beneath the heading to explain the heading. We'll
-            add onto it with another sentence and probably just keep going until
-            we run out of words.
+            Converting Word to PDF transforms a Word document into a PDF format
+            while preserving its layout and content.
           </p>
-          <a href="#" class="icon-link">
-            Call to action
-            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-          </a>
+          <button>
+            <a href="/converter/word_to_pdf" class="text-decoration-none">
+              view
+            </a>
+          </button>
         </div>
         <div class="feature col">
           <div
@@ -213,16 +191,16 @@
               <use xlink:href="#toggles2"></use>
             </svg>
           </div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
+          <h3 class="fs-2 text-body-emphasis">Image to PDF</h3>
           <p>
-            Paragraph of text beneath the heading to explain the heading. We'll
-            add onto it with another sentence and probably just keep going until
-            we run out of words.
+            Converting Word to PDF transforms a Word document into a compact,
+            shareable PDF file.
           </p>
-          <a href="#" class="icon-link">
-            Call to action
-            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-          </a>
+          <button>
+            <a href="/converter/img_to_pdf" class="text-decoration-none">
+              view
+            </a>
+          </button>
         </div>
       </div>
     </div>
