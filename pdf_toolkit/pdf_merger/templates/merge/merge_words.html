@@ -96,12 +96,18 @@
                   converter
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">word to pdf</a></li>
+                  <li>
+                    <a class="dropdown-item" href="/converter/word_to_pdf"
+                      >word to pdf</a
+                    >
+                  </li>
                   <li>
                     <hr class="dropdown-divider" />
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">img to pdf</a>
+                    <a class="dropdown-item" href="/converter/img_to_pdf/"
+                      >img to pdf</a
+                    >
                   </li>
                 </ul>
               </li>
@@ -125,7 +131,7 @@
       <form id="word-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="file-input" class="custom-file-label"
-          >Select Word file</label
+          >Select Word files</label
         >
         <input
           type="file"
