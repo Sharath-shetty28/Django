@@ -71,3 +71,7 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+nav {
+  background-color: black;
+  color: white;
+}
