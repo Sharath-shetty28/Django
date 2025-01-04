@@ -197,7 +197,7 @@
       }
       function updateConvertButtonState() {
         if (selectedFiles.length >= 1) {
-          convertButton.style.display = "flex";
+          convertButton.style.display = "inline-block";
         } else {
           convertButton.style.display = "none";
         }
@@ -249,19 +249,21 @@
         newInput.click();
       });
 
-      form.addEventListener("submit", async (e) => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append("word_files", fileInput.files[0]);
+
+        selectedFiles.forEach((file) => 
+        formData.append("word_files",file));
 
         const csrfToken = document.querySelector(
           "[name=csrfmiddlewaretoken]"
         ).value;
-        const response = await fetch("/converter/word_to_pdf/", {
+        const response =  fetch("/converter/word_to_pdf/", {
           method: "POST",
           headers: { "X-CSRFToken": csrfToken },
           body: formData,
-        });
+        })
 
         .then((response) => {
           if (response.ok) {
