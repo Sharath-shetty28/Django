@@ -1,0 +1,60 @@
+* {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+#file-input {
+  display: none;
+}
+
+/* Style the custom button */
+.custom-file-label {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#file-list {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.file-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.file-item button {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red;
+  font-size: 16px;
+}
