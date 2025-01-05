@@ -23,6 +23,8 @@
         width: 100%;
         height: 100%;
         overflow: scroll; /* Enable scrolling */
+        background: black;
+        color: ghostwhite;
       }
 
       /* Hide scrollbars */
@@ -47,7 +49,8 @@
         border-radius: 5px;
         cursor: pointer;
       }
-      button a {
+      button a,
+      .nav-link {
         color: white;
       }
 
@@ -58,18 +61,21 @@
         scale: 0.9;
       }
       nav {
-        background: black;
+        background: repeating-linear-gradient(346deg, black, blue 100px);
         color: white;
       }
       .mainimg {
         border: 5px solid blue;
         color: white;
       }
+      .container {
+        margin-top: 30px;
+      }
     </style>
   </head>
   <body>
     <nav
-      class="navbar navbar-expand-lg navbar-dark"
+      class="navbar navbar-expand-lg navbar-dark fixed-top"
       aria-label="Offcanvas navbar large"
     >
       <div class="container-fluid">
@@ -164,7 +170,7 @@
               </li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
-              <button class="btn btn-outline-success" type="submit">
+              <button class="btn btn-outline-light" type="submit">
                 <i class="ri-share-line"></i>
               </button>
             </div>
@@ -188,7 +194,7 @@
           />
         </div>
         <div class="col-lg-6">
-          <h1 class="display-7 fw-bold text-body-emphasis lh-1 mb-3">
+          <h1 class="display-7 fw-bold lh-1 mb-3 text-center">
             Streamline your workflow with File Toolkit today!
           </h1>
           <p class="lead">
@@ -210,7 +216,7 @@
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
           ></div>
-          <h3 class="fs-2 text-body-emphasis">Merge PDF</h3>
+          <h3 class="fs-2">Merge PDF</h3>
           <p>
             Merging PDFs combines multiple PDF files into a single document
             while preserving their content and structure.
@@ -224,7 +230,7 @@
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-4"
           ></div>
-          <h3 class="fs-2 text-body-emphasis">Merge Word</h3>
+          <h3 class="fs-2">Merge Word</h3>
           <p>
             Merging Word documents combines multiple Word files into a single
             document.
@@ -242,7 +248,7 @@
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
           ></div>
-          <h3 class="fs-2 text-body-emphasis">Word to PDF</h3>
+          <h3 class="fs-2">Word to PDF</h3>
           <p>
             Converting Word to PDF transforms a Word document into a PDF format
             while preserving its layout and content.
@@ -257,7 +263,7 @@
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
           ></div>
-          <h3 class="fs-2 text-body-emphasis">Image to PDF</h3>
+          <h3 class="fs-2">Image to PDF</h3>
           <p>
             Converting Word to PDF transforms a Word document into a compact,
             shareable PDF file.
@@ -282,35 +288,27 @@
             class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
           >
           </a>
-          <span class="mb-3 mb-md-0 text-body-secondary">©File_ToolKit</span>
+          <span class="mb-3 mb-md-0">©File_ToolKit</span>
         </div>
 
         <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
           <li class="ms-3">
-            <a
-              class="text-body-secondary"
-              href="https://www.linkedin.com/in/sharathshetty28/"
+            <a href="https://www.linkedin.com/in/sharathshetty28/"
               ><i class="ri-linkedin-box-line"></i
             ></a>
           </li>
           <li class="ms-3">
-            <a
-              class="text-body-secondary"
-              href="mailto:sharathshetty301@gmail.com"
+            <a href="mailto:sharathshetty301@gmail.com"
               ><i class="ri-mail-line"></i
             ></a>
           </li>
           <li class="ms-3">
-            <a
-              class="text-body-secondary"
-              href="https://www.instagram.com/sharath._.shettyy_.28/"
+            <a href="https://www.instagram.com/sharath._.shettyy_.28/"
               ><i class="ri-instagram-line"></i
             ></a>
           </li>
           <li class="ms-3">
-            <a
-              class="text-body-secondary"
-              href="https://github.com/Sharath-shetty28"
+            <a href="https://github.com/Sharath-shetty28"
               ><i class="ri-github-fill"></i
             ></a>
           </li>
