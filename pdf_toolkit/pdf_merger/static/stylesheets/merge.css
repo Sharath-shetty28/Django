@@ -58,12 +58,3 @@ h1 {
   color: red;
   font-size: 16px;
 }
-.btnstyle {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-}

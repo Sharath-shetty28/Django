@@ -17,7 +17,12 @@
         background-color: black;
         color: white;
       }
+
     </style>
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+  />
   </head>
   <body>
     <nav
@@ -142,16 +147,19 @@
         accept=".jpg, .jpeg, .png"
         required
       />
-      <button type="button" id="add-file" style="display: none">
-        Add Another File
+      <button type="button" id="add-file" style="display: none"  class="btn btn-primary p-2 text-white ms-3">
+        <i class="ri-add-large-fill"></i>
       </button>
       <div class="file-list" id="file-list"></div>
-      <button type="submit" id="convert-btn">Convert to PDF</button>
+      <button type="submit"  class="btn btn-primary p-2" id="convert-btn">Convert to PDF</button>
     </form>
-    <div id="download-section" style="display: none">
-      <h2>Conversion Complete!</h2>
-      <a id="download-link" href="#" download="">Download PDF</a>
-      <button type="button" id="reset-btn">Reset</button>
+    <div id="download-section" style="display: none" class="m-4">
+      <h2 class="m-4">Conversion Complete!</h2>
+      <button class="btn btn-primary">
+
+        <a class="text-white text-decoration-none" id="download-link" href="#" download="">Download PDF</a>
+      </button>
+      <button type="button" id="reset-btn" class="btn btn-primary ms-3">Reset</button>
     </div>
 
     <script
