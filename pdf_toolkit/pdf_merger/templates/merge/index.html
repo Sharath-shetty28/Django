@@ -61,8 +61,8 @@
         background: black;
         color: white;
       }
-      img {
-        border: 8px solid blue;
+      .mainimg {
+        border: 5px solid blue;
         color: white;
       }
     </style>
@@ -73,7 +73,14 @@
       aria-label="Offcanvas navbar large"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" href="/"> File_ToolKit</a>
+        <a class="navbar-brand" href="/"
+          ><img
+            class="border-none"
+            src="https://svgmix.com/uploads/codicons/77a588-file-code.svg"
+            class="text-light"
+          />
+          File_ToolKit</a
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -92,7 +99,7 @@
         >
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbar2Label">
-              pdf_toolkit
+              File_ToolKit
             </h5>
             <button
               type="button"
@@ -111,12 +118,12 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  merge
+                  Merge
                 </a>
                 <ul class="dropdown-menu">
                   <li>
                     <a class="dropdown-item" href="merge/merge_pdfs"
-                      >pdf merge</a
+                      >Merge PDF</a
                     >
                   </li>
                   <li>
@@ -124,7 +131,7 @@
                   </li>
                   <li>
                     <a class="dropdown-item" href="/merge/merge_words"
-                      >word merge</a
+                      >Merge Word</a
                     >
                   </li>
                 </ul>
@@ -137,12 +144,12 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  converter
+                  Converter
                 </a>
                 <ul class="dropdown-menu">
                   <li>
                     <a class="dropdown-item" href="/converter/word_to_pdf"
-                      >word to pdf</a
+                      >Word to PDF</a
                     >
                   </li>
                   <li>
@@ -150,7 +157,7 @@
                   </li>
                   <li>
                     <a class="dropdown-item" href="/converter/img_to_pdf"
-                      >img to pdf</a
+                      >Image to PDF</a
                     >
                   </li>
                 </ul>
@@ -173,7 +180,7 @@
         <div class="col-10 col-sm-8 col-lg-6">
           <img
             src="../static/images/image.jpg"
-            class="d-block mx-lg-auto img-fluid rounded-5"
+            class="d-block mx-lg-auto img-fluid rounded-5 mainimg"
             alt="Bootstrap Themes"
             width="500"
             height="100"
@@ -274,9 +281,6 @@
             href="/"
             class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
           >
-            <svg class="bi" width="30" height="24">
-              <use xlink:href="#bootstrap"></use>
-            </svg>
           </a>
           <span class="mb-3 mb-md-0 text-body-secondary">©File_ToolKit</span>
         </div>
