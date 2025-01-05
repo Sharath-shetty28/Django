@@ -41,7 +41,7 @@ h1 {
 .file-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .file-item img {
