@@ -32,7 +32,6 @@ Built using modern web technologies and designed to deliver a seamless experienc
 ---
 
 ## 📷 Screenshots  
-*(Add screenshots here to showcase the interface and features of your project)*  
 ![image](https://github.com/user-attachments/assets/f9fa71a7-519c-4922-9754-4c3683704696)
 ![image](https://github.com/user-attachments/assets/219bcc4f-a10c-419b-9e17-32c4fa99406d)
 ![image](https://github.com/user-attachments/assets/04ba8b93-c221-451d-83ad-5d303f8fefb1)
@@ -56,7 +55,7 @@ Follow these steps to run the project locally:
 
 ### 1. Clone the Repository  
 ```
-git clone https://github.com/your-username/file-toolkit.git  
+git clone https://github.com/Sharath-shetty28/File_ToolKit.git  
 cd file-toolkit  
 ```  
 
