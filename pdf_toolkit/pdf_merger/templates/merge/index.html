@@ -176,7 +176,11 @@
               </li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
-              <button class="btn btn-outline-light" type="submit">
+              <button
+                class="btn btn-outline-light"
+                type="submit"
+                onclick="shareLink()"
+              >
                 <i class="ri-share-line"></i>
               </button>
             </div>
@@ -185,7 +189,7 @@
       </div>
     </nav>
     {% comment %} hero {% endcomment %}
-    <div class="container col-xxl-8 px-3 py-3">
+    <div class="container col-xxl-8 px-3 pt-3">
       <div
         class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-5"
       >
@@ -322,5 +326,25 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script>
+      function shareLink() {
+        const shareData = {
+          title: "File Toolkit",
+          text: "Boost your productivity with this powerful file toolkit! Convert, merge, and manage your documents effortlessly.",
+          url: "https://file-toolkit.onrender.com",
+        };
+
+        if (navigator.share) {
+          navigator
+            .share(shareData)
+            .then(() => console.log("Shared successfully!"))
+            .catch((err) => console.error("Error sharing:", err));
+        } else {
+          alert(
+            "Your browser does not support . Please copy the link manually."
+          );
+        }
+      }
+    </script>
   </body>
 </html>
