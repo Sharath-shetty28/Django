@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['file-toolkit.onrender.com']
 # ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://file-toolkit.onrender.com',
+]
 
 
 
