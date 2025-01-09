@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-m2jjacm9^706nsno*c%n@kqc($6xu=91g$93ne5nq1++)8n09t
 DEBUG = True
 
 ALLOWED_HOSTS = ['file-toolkit.onrender.com']
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://file-toolkit.onrender.com',
 ]

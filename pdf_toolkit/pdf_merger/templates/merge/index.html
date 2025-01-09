@@ -77,6 +77,45 @@
       .container {
         margin-top: 50px;
       }
+
+      /* Preloader Styling */
+      #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #1d1d1d;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Loader Animation */
+      .loader h1 {
+        font-size: 2rem;
+        animation: pulse 1.5s infinite;
+      }
+
+      /* Pulse Animation */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Main Content Style (hidden by default) */
+      #main-content {
+        padding: 20px;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -193,7 +232,17 @@
       <div
         class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-5"
       >
-        <div class="col-10 col-sm-8 col-lg-6">
+        <div id="preloader">
+          <div class="loader">
+            <h1>FileToolkit from Sharath Shetty</h1>
+          </div>
+        </div>
+
+        <div
+          class="col-10 col-sm-8 col-lg-6"
+          id="main-content"
+          style="display: none"
+        >
           <img
             src="../static/images/image.jpg"
             class="d-block mx-lg-auto img-fluid rounded-5 mainimg"
@@ -327,6 +376,16 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      // Wait until the page is fully loaded
+      window.addEventListener("load", () => {
+        const preloader = document.getElementById("preloader");
+        const mainContent = document.getElementById("main-content");
+
+        // Hide the preloader and show the main content
+        preloader.style.display = "none";
+        mainContent.style.display = "block";
+      });
+
       function shareLink() {
         const shareData = {
           title: "File Toolkit",
