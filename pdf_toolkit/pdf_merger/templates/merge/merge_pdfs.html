@@ -199,11 +199,45 @@
           removeFile(fileName, fileItem);
         });
 
+
+        const moveUpButton = document.createElement("button");
+        moveUpButton.textContent = "⬆";
+        moveUpButton.style.marginLeft = "5px";
+        moveUpButton.addEventListener("click", () => {
+          moveFileUp(fileItem);
+        });
+      
+        const moveDownButton = document.createElement("button");
+        moveDownButton.textContent = "⬇";
+        moveDownButton.style.marginLeft = "5px";
+        moveDownButton.addEventListener("click", () => {
+          moveFileDown(fileItem);
+        });
+
         fileItem.appendChild(fileIcon);
         fileItem.appendChild(fileNameSpan);
         fileItem.appendChild(removeButton);
+        
+        fileItem.appendChild(moveUpButton);
+  fileItem.appendChild(moveDownButton);
         fileList.appendChild(fileItem);
       }
+
+
+
+      function moveFileUp(fileItem) {
+  const prevSibling = fileItem.previousElementSibling;
+  if (prevSibling) {
+    fileList.insertBefore(fileItem, prevSibling);
+  }
+}
+
+function moveFileDown(fileItem) {
+  const nextSibling = fileItem.nextElementSibling;
+  if (nextSibling) {
+    fileList.insertBefore(nextSibling, fileItem);
+  }
+}
 
       // Remove file from the list
       function removeFile(fileName, fileItem) {
