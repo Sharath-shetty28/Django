@@ -27,6 +27,11 @@ urlpatterns = [
     # Include URLs from converter
     path('converter/', include('converter.urls')),
 
+    path('security/', include('pdf_merger.urls')),
+
+
+
+
 ]
 
 

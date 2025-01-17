@@ -67,3 +67,47 @@ def merge_words(request):
 
     return render(request, 'merge/merge_words.html')
     
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from PyPDF2 import PdfReader, PdfWriter
+from io import BytesIO
+
+def lock_pdf(request):
+    if request.method == 'POST':
+        # Get the uploaded file and password
+        pdf_file = request.FILES.get('pdf_file')
+        password = request.POST.get('password')
+
+        # Validate inputs
+        if not pdf_file or not password:
+            return JsonResponse({'error': 'PDF file and password are required.'}, status=400)
+
+        try:
+            # Read the PDF file
+            pdf_reader = PdfReader(pdf_file)
+
+            # Create a new PDF writer
+            pdf_writer = PdfWriter()
+
+            # Copy pages from reader to writer
+            for page in pdf_reader.pages:
+                pdf_writer.add_page(page)
+
+            # Encrypt the PDF with the given password
+            pdf_writer.encrypt(password)
+
+            # Save the locked PDF to a BytesIO object
+            output_pdf = BytesIO()
+            pdf_writer.write(output_pdf)
+            output_pdf.seek(0)
+
+            # Return the locked PDF as a downloadable file
+            response = HttpResponse(output_pdf, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="locked.pdf"'
+            return response
+
+        except Exception as e:
+            return JsonResponse({'error': f'Failed to lock PDF: {str(e)}'}, status=500)
+
+    # Render the upload form if GET request
+    return render(request, 'security/lock_pdf.html')

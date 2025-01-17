@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lock PDF</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+   
+    <form id="lock-pdf-form" method="POST" enctype="multipart/form-data" action="/security/lock_pdf/">
+        {% csrf_token %}
+        <label for="pdf_file">Upload PDF:</label>
+        <input type="file" name="pdf_file" id="pdf_file" required><br><br>
+      
+        <label for="password">Enter Password:</label>
+        <input type="password" name="password" id="password" required><br><br>
+      
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" required><br><br>
+      
+        <button type="submit">Lock PDF</button>
+      </form>
+      
+      <script>
+        // Client-side validation for password and confirm password
+        const form = document.getElementById("lock-pdf-form");
+      
+        form.addEventListener("submit", (e) => {
+          const password = document.getElementById("password").value;
+          const confirmPassword = document.getElementById("confirm_password").value;
+      
+          if (password !== confirmPassword) {
+            e.preventDefault(); // Prevent form submission
+            alert("Passwords do not match. Please re-enter.");
+          }
+        });
+      </script>
+      
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    {% comment %} <script>
+      document
+        .getElementById("pdf-lock-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+
+          fetch("/security/lock_pdf/", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.error) {
+                document.getElementById("response-message").textContent =
+                  data.error;
+              } else {
+                document.getElementById("response-message").textContent =
+                  data.message;
+                const downloadLink = document.createElement("a");
+                downloadLink.href = URL.createObjectURL(
+                  new Blob([data.locked_pdf], { type: "application/pdf" })
+                );
+                downloadLink.download = "locked_pdf.pdf";
+                downloadLink.textContent = "Download Locked PDF";
+                document
+                  .getElementById("response-message")
+                  .appendChild(downloadLink);
+              }
+            })
+            .catch((error) => {
+              document.getElementById("response-message").textContent =
+                "An error occurred.";
+            });
+        });
+    </script> {% endcomment %}
+  </body>
+</html>

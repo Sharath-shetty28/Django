@@ -79,6 +79,16 @@ WSGI_APPLICATION = 'pdf_toolkit.wsgi.application'
 ASGI_APPLICATION = 'pdf_toolkit.asgi.application'
 
 
+#password
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your email host
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'abcd@example.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'hello'  # Replace with your email password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
