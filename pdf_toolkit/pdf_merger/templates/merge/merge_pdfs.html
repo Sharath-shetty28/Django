@@ -29,6 +29,27 @@
       .nav-link {
         color: white;
       }
+      .progress-disabled {
+  background-color: #6c757d !important;
+  color: white;
+  cursor: not-allowed;
+}
+#progress-section {
+  margin-top: 20px;
+}
+
+.progress {
+  height: 30px;
+}
+
+.progress-bar {
+  height: 100%;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+  background-color: #007bff;
+}
+
 
     </style>
   </head>
@@ -157,11 +178,18 @@
         Merge PDFs
       </button>
     </form>
+    <div id="progress-section" style="display: none" class="m-4">
+      <div class="progress">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+      </div>
+    </div>
+
     <div id="download-section" style="display: none" class="m-4">
       <h2 class="m-4">Merge Complete!</h2>
-     <button  class="btn btn-primary"><a id="download-link" href="#" download="" class="text-white text-decoration-none">Download</a></button> 
-      <button type="button" id="reset-btn"  class="btn btn-primary ms-3">Reset</button>
+      <button type="button" class="btn btn-primary" id="download-btn">Download</button>
+      <button type="button" id="reset-btn" class="btn btn-primary ms-3">Reset</button>
     </div>
+    
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -177,6 +205,11 @@
       const resetButton = document.getElementById("reset-btn");
       const form = document.getElementById("pdf-form");
 
+      const downloadBtn = document.getElementById("download-btn");
+      const progressSection = document.getElementById("progress-section");
+      const progressBar = document.getElementById("progress-bar");
+     
+      let downloadUrl = null;
       let selectedFiles = []; // Array to track selected files
       let firstFileName = ""; // To store the name of the first file
 
@@ -248,7 +281,7 @@ function moveFileDown(fileItem) {
         updateMergeButtonState();
       }
 
-      // Update the state of the merge button
+   
 
       // Update the state of the merge button
       function updateMergeButtonState() {
@@ -308,43 +341,92 @@ function moveFileDown(fileItem) {
 
         newInput.click();
       });
+ 
+      
+       form.addEventListener("submit", (e) => {
 
-      // Handle form submission
-      form.addEventListener("submit", (e) => {
+        
         e.preventDefault(); // Prevent default form submission
         const formData = new FormData();
-
+      
+        // Add selected files to FormData
         selectedFiles.forEach((file) => formData.append("pdfs", file));
-
-        const csrfToken = document.querySelector(
-          "[name=csrfmiddlewaretoken]"
-        ).value;
-
-        fetch("/merge/merge_pdfs/", {
-          method: "POST",
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
-          body: formData,
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.blob();
-            }
-            throw new Error("Failed to merge PDFs.");
-          })
-          .then((blob) => {
-            const url = URL.createObjectURL(blob);
-            const mergedFileName = `${firstFileName}_merged.pdf`;
-            downloadLink.href = url;
-            downloadLink.download = mergedFileName;
-            downloadSection.style.display = "block";
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
+      
+        const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+      
+       
+      
+        // Hide the merge button and show the progress bar
+        mergeButton.style.display = "none"; // Hide the Merge button
+        progressSection.style.display = "block"; // Show progress section
+      
+       
+        let progress = 0;
+        const interval = setInterval(() => {
+          if (progress < 100) {
+            progress += 10; // Increment progress
+            progressBar.style.width = progress + "%"; // Update the width of the progress bar
+            progressBar.textContent = progress + "%"; // Update the progress text
+          } else {
+            clearInterval(interval); 
+            progressBar.textContent = "Completed"; // Show completed text
+            progressBar.style.backgroundColor = "#6c757d"; 
+      
+            // After progress bar completes, send the fetch request
+            fetch("/merge/merge_pdfs/", {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": csrfToken,
+              },
+              body: formData,
+            })
+              .then((response) => {
+                if (response.ok) {
+                  return response.blob();
+                }
+                throw new Error("Failed to merge PDFs.");
+              })
+              .then((blob) => {
+              //  {% comment %} const url = URL.createObjectURL(blob);
+              //  const mergedFileName = `${firstFileName}_merged.pdf`;
+               // const downloadLink = document.getElementById("download-link");
+               // downloadLink.href = url;
+               // downloadLink.download = mergedFileName; {% endcomment %}
+      
+                // Show the download section after merging
+                downloadUrl = URL.createObjectURL(blob);
+                downloadSection.style.display = "block";
+              })
+              .catch((error) => {
+                alert(error.message); // Display error message if the fetch fails
+              })
+              .finally(() => {
+                // Hide progress section after fetch is done
+                progressSection.style.display = "none";
+              });
+          }
+        }, 450); // Simulate progress every 300ms
       });
 
+
+      downloadBtn.addEventListener("click", () => {
+        if (!downloadUrl) {
+          alert("No file available for download.");
+          return;
+        }
+    
+        // Prompt the user for a new file name
+        const newFileName = prompt("Enter a new file name (without extension):", "merged-file");
+        if (newFileName) {
+          const downloadLink = document.createElement("a");
+          downloadLink.href = downloadUrl;
+          downloadLink.download = `${newFileName.trim()}.pdf`;
+          downloadLink.click();
+        } else {
+          alert("File name cannot be empty.");
+        }
+      });
+        
       // Reset the form for a new operation
       resetButton.addEventListener("click", () => {
         form.reset();
@@ -356,6 +438,14 @@ function moveFileDown(fileItem) {
         fileInput.style.display="none";
         selectedFiles = [];
         firstFileName = "";
+
+
+        downloadSection.style.display = "none";
+        progressSection.style.display = "none";
+
+        progressBar.style.width = "0%";
+        progressBar.textContent = "0%";
+        progressBar.style.backgroundColor = "#007bff"; // Reset color to blue
       });
     </script>
   </body>
