@@ -368,7 +368,7 @@
           } else {
             clearInterval(interval); 
             progressBar.textContent = "Completed"; // Show completed text
-            progressBar.style.backgroundColor = "#6c757d"; 
+            progressBar.style.backgroundColor = "#00be00"; 
       
             // After progress bar completes, send the fetch request
             fetch("/merge/merge_pdfs/", {
@@ -396,7 +396,7 @@
                 progressSection.style.display = "none";
               });
           }
-        }, 450); // Simulate progress every 300ms
+        }, 390); // Simulate progress every 300ms
       });
 
 

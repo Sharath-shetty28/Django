@@ -384,7 +384,7 @@
           } else {
             clearInterval(interval);
             progressBar.textContent = "Completed"; // Show completed text
-            progressBar.style.backgroundColor = "#6c757d";
+            progressBar.style.backgroundColor = "#00be00";
 
             fetch("/merge/merge_words/", {
               method: "POST",
@@ -411,7 +411,7 @@
                 progressSection.style.display = "none";
               });
           }
-        }, 450);
+        }, 390);
       });
 
       downloadBtn.addEventListener("click", () => {
