@@ -5,8 +5,8 @@ A powerful and user-friendly file management tool that simplifies your document 
 - **Convert Word to PDF**  
 - **Merge Word documents**
 - **Merge PDF documents**
-- ✅ Lock PDF using password.
--✅ Seamless renaming of files.
+- **Lock PDF using password**
+- **Seamless renaming of files**
 - And much more!  
 
 Built using modern web technologies and designed to deliver a seamless experience across devices.  
