@@ -31,6 +31,7 @@
         background: black;
         color: ghostwhite;
         font-family: "remixicon";
+        transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition for color changes */
       }
 
       /* Hide scrollbars */
@@ -54,6 +55,7 @@
         padding: 10px 15px;
         border-radius: 5px;
         cursor: pointer;
+        font-weight:700;
       }
       button a,
       .nav-link {
@@ -62,6 +64,7 @@
 
       button:hover {
         scale: 1.1;
+        box-shadow:  1px 1px 26px 2px #0800d7;
       }
       button:active {
         scale: 0.9;
@@ -71,50 +74,35 @@
         color: white;
       }
       .mainimg {
-        border: 5px solid blue;
+        border: 5px dotted blue;
         color: white;
       }
       .container {
         margin-top: 50px;
       }
-
-      /* Preloader Styling */
-      #preloader {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #1d1d1d;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        font-family: Arial, sans-serif;
-      }
-
-      /* Loader Animation */
-      .loader h1 {
-        font-size: 2rem;
-        animation: pulse 1.5s infinite;
-      }
-
-      /* Pulse Animation */
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
+      .box1 {
+        box-shadow: 1px 1px 10px 5px blue;
       }
 
       /* Main Content Style (hidden by default) */
       #main-content {
         padding: 20px;
         text-align: center;
+      }
+
+   
+
+      #theme-button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        background-color:blue;
+        transition: background-color 0.3s ease;
+      }
+
+      #theme-button:hover {
+        background-color: blue;
       }
     </style>
   </head>
@@ -161,6 +149,16 @@
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="/security/lock_pdf/"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Lock PDF
+                </a>
+              </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -213,6 +211,12 @@
                   </li>
                 </ul>
               </li>
+              <li class="nav-item">
+                  <button id="theme-button" >
+                  <i id="theme-icon" class="ri-moon-fill"></i>
+                </button>
+                </a>
+              </li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
               <button
@@ -232,16 +236,11 @@
       <div
         class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-5"
       >
-        <div id="preloader">
-          <div class="loader">
-            <h1>FileToolkit from Sharath Shetty</h1>
-          </div>
-        </div>
+       
 
         <div
           class="col-10 col-sm-8 col-lg-6"
           id="main-content"
-          style="display: none"
         >
           <img
             src="../static/images/image.jpg"
@@ -249,7 +248,6 @@
             alt="Bootstrap Themes"
             width="500"
             height="100"
-            loading="lazy"
           />
         </div>
         <div class="col-lg-6 text-center">
@@ -303,7 +301,7 @@
     <div class="container text-center px-4 py-1" id="featured-3">
       <h2 class="pb-2 border-bottom text-primary">Convert Image/Word to PDF</h2>
       <div class="row g-4 py-5 row-cols-1 row-cols-lg-3 justify-content-evenly">
-        <div class="feature col p-5 border border-primary rounded-5">
+        <div class="box1 feature col p-5 border border-primary rounded-5">
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
           ></div>
@@ -316,7 +314,7 @@
             <button>view</button>
           </a>
         </div>
-        <div class="feature col p-5 border border-primary rounded-5">
+        <div class="box1 feature col p-5 border border-primary rounded-5">
           <div
             class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
           ></div>
@@ -343,10 +341,14 @@
             class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
           >
           </a>
-          <span class="mb-3 mb-md-0">©File_ToolKit</span>
+          <span class="mb-3 mb-md-0"
+            >Project by <strong>Sharath Shetty</strong> &nbsp;&nbsp;</span
+          >
         </div>
 
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <ul
+          class="nav col-md-4 justify-content-end list-unstyled d-flex align-items-center"
+        >
           <li class="ms-3">
             <a href="https://www.linkedin.com/in/sharathshetty28/"
               ><i class="ri-linkedin-box-line"></i
@@ -376,6 +378,25 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      const themeButton = document.getElementById("theme-button");
+      const themeIcon = document.getElementById("theme-icon");
+
+      themeButton.addEventListener("click", () => {
+        if (document.body.style.backgroundColor === "black") {
+          // Switch to light theme
+          document.body.style.backgroundColor = "white";
+          document.body.style.color = "black";
+          themeIcon.classList.remove("ri-sun-fill");
+          themeIcon.classList.add("ri-moon-fill");
+        } else {
+          // Switch to dark theme
+          document.body.style.backgroundColor = "black";
+          document.body.style.color = "white";
+          themeIcon.classList.remove("ri-moon-fill");
+          themeIcon.classList.add("ri-sun-fill");
+        }
+      });
+
       // Wait until the page is fully loaded
       window.addEventListener("load", () => {
         const preloader = document.getElementById("preloader");

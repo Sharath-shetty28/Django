@@ -25,6 +25,36 @@
       }
       .nav-link {
         color: white;
+        font-weight: 600;
+      }
+      body {
+        font-family: "remixicon";
+      }
+      .progress-disabled {
+        background-color: #6c757d !important;
+        color: white;
+        cursor: not-allowed;
+      }
+      #progress-section {
+        margin-top: 20px;
+      }
+      button:hover {
+        scale: 1.1;
+      }
+      button:active {
+        scale: 0.9;
+      }
+
+      .progress {
+        height: 30px;
+      }
+
+      .progress-bar {
+        height: 100%;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+        background-color: #007bff;
       }
     </style>
     <link
@@ -73,6 +103,16 @@
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="/security/lock_pdf/"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Lock PDF
+                </a>
+              </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -127,7 +167,11 @@
               </li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
-              <button class="btn btn-outline-light" type="submit">
+              <button
+                class="btn btn-outline-light"
+                type="submit"
+                onclick="shareLink()"
+              >
                 <i class="ri-share-line"></i>
               </button>
             </div>
@@ -173,16 +217,26 @@
           Merge Word File
         </button>
       </form>
+      <div id="progress-section" style="display: none" class="m-4">
+        <div class="progress">
+          <div
+            id="progress-bar"
+            class="progress-bar"
+            role="progressbar"
+            style="width: 0%"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            0%
+          </div>
+        </div>
+      </div>
+
       <div id="download-section" style="display: none" class="m-4">
         <h2 class="m-4">Merge Complete!</h2>
-        <button class="btn btn-primary">
-          <a
-            class="text-white text-decoration-none"
-            id="download-link"
-            href="#"
-            download=""
-            >Download
-          </a>
+        <button type="button" class="btn btn-primary" id="download-btn">
+          Download
         </button>
         <button type="button" id="reset-btn" class="btn btn-primary ms-3">
           Reset
@@ -203,6 +257,12 @@
       const downloadLink = document.getElementById("download-link");
       const resetButton = document.getElementById("reset-btn");
       const form = document.getElementById("word-form");
+
+      const downloadBtn = document.getElementById("download-btn");
+      const progressSection = document.getElementById("progress-section");
+      const progressBar = document.getElementById("progress-bar");
+
+      let downloadUrl = null;
 
       let selectedFiles = []; // Array to track selected files
       let firstFileName = ""; // To store the name of the first file
@@ -312,29 +372,67 @@
           "[name=csrfmiddlewaretoken]"
         ).value;
 
-        fetch("/merge/merge_words/", {
-          method: "POST",
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
-          body: formData,
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.blob();
-            }
-            throw new Error("Failed to merge Word files.");
-          })
-          .then((blob) => {
-            const url = URL.createObjectURL(blob);
-            const mergedFileName = `${firstFileName}_merged.docx`;
-            downloadLink.href = url;
-            downloadLink.download = mergedFileName;
-            downloadSection.style.display = "block";
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
+        mergeButton.style.display = "none"; // Hide the Merge button
+        progressSection.style.display = "block"; // Show progress section
+
+        let progress = 0;
+        const interval = setInterval(() => {
+          if (progress < 100) {
+            progress += 10; // Increment progress
+            progressBar.style.width = progress + "%"; // Update the width of the progress bar
+            progressBar.textContent = progress + "%"; // Update the progress text
+          } else {
+            clearInterval(interval);
+            progressBar.textContent = "Completed"; // Show completed text
+            progressBar.style.backgroundColor = "#6c757d";
+
+            fetch("/merge/merge_words/", {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": csrfToken,
+              },
+              body: formData,
+            })
+              .then((response) => {
+                if (response.ok) {
+                  return response.blob();
+                }
+                throw new Error("Failed to merge Word files.");
+              })
+              .then((blob) => {
+                downloadUrl = URL.createObjectURL(blob);
+                downloadSection.style.display = "block";
+              })
+              .catch((error) => {
+                alert(error.message);
+              })
+              .finally(() => {
+                // Hide progress section after fetch is done
+                progressSection.style.display = "none";
+              });
+          }
+        }, 450);
+      });
+
+      downloadBtn.addEventListener("click", () => {
+        if (!downloadUrl) {
+          alert("No file available for download.");
+          return;
+        }
+
+        // Prompt the user for a new file name
+        const newFileName = prompt(
+          "Enter a new file name (without extension):",
+          "merged-file"
+        );
+        if (newFileName) {
+          const downloadLink = document.createElement("a");
+          downloadLink.href = downloadUrl;
+          downloadLink.download = `${newFileName.trim()}.docx`;
+          downloadLink.click();
+        } else {
+          alert("File name cannot be empty.");
+        }
       });
 
       // Reset the form for a new operation
@@ -348,7 +446,32 @@
         fileInput.style.display = "none";
         selectedFiles = [];
         firstFileName = "";
+
+        downloadSection.style.display = "none";
+        progressSection.style.display = "none";
+
+        progressBar.style.width = "0%";
+        progressBar.textContent = "0%";
+        progressBar.style.backgroundColor = "#007bff";
       });
+      function shareLink() {
+        const shareData = {
+          title: "File Toolkit",
+          text: "Boost your productivity with this powerful file toolkit! Convert, merge, and manage your documents effortlessly.",
+          url: "https://file-toolkit.onrender.com",
+        };
+
+        if (navigator.share) {
+          navigator
+            .share(shareData)
+            .then(() => console.log("Shared successfully!"))
+            .catch((err) => console.error("Error sharing:", err));
+        } else {
+          alert(
+            "Your browser does not support . Please copy the link manually."
+          );
+        }
+      }
     </script>
   </body>
 </html>

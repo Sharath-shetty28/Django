@@ -3,86 +3,511 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lock PDF</title>
+    <title>FileToolKit</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <style>
+      /* Hide scrollbars */
+      ::-webkit-scrollbar {
+        display: none; /* For Chrome, Safari, Edge */
+      }
+
+      /* For Firefox */
+      body {
+        scrollbar-width: none; /* Firefox */
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button a,
+      .nav-link {
+        color: white;
+        font-weight: 600;
+      }
+
+      button:hover {
+        scale: 1.1;
+      }
+      button:active {
+        scale: 0.9;
+      }
+
+      nav {
+        background: repeating-linear-gradient(346deg, black, blue 100px);
+        color: white;
+        font-weight: 900;
+      }
+      .mainimg {
+        border: 5px solid blue;
+        color: white;
+      }
+      .container {
+        margin-top: 70px;
+      }
+
+      /* Main Content Style (hidden by default) */
+      #main-content {
+        padding: 30px;
+        text-align: center;
+      }
+
+      input {
+        border-radius: 10px;
+        border: 2px solid #0d00ff;
+        width: 20vw;
+        height: 6vh;
+      }
+
+      input::placeholder {
+        color: blue;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      #password-error-container {
+        color: #0000a6;
+        font-style: italic;
+      }
+
+      #password-error-container {
+        margin: 8px;
+      }
+      #reset {
+        margin-left: 10px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        input {
+          width: 100%;
+        }
+      }
+    </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-   
-    <form id="lock-pdf-form" method="POST" enctype="multipart/form-data" action="/security/lock_pdf/">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark fixed-top"
+      aria-label="Offcanvas navbar large"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"
+          ><img
+            class="border-none"
+            src="https://svgmix.com/uploads/codicons/77a588-file-code.svg"
+            class="text-light"
+          />
+          File_ToolKit</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar2"
+          aria-controls="offcanvasNavbar2"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end text-bg-dark"
+          tabindex="-1"
+          id="offcanvasNavbar2"
+          aria-labelledby="offcanvasNavbar2Label"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbar2Label">
+              File_ToolKit
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="/security/lock_pdf/"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Lock PDF
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Merge
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="/merge/merge_pdfs"
+                      >Merge PDF</a
+                    >
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/merge/merge_words"
+                      >Merge Word</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Converter
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="/converter/word_to_pdf"
+                      >Word to PDF</a
+                    >
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/converter/img_to_pdf"
+                      >Image to PDF</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <div class="d-flex mt-3 mt-lg-0">
+              <button
+                class="btn btn-outline-light"
+                type="submit"
+                onclick="shareLink()"
+              >
+                <i class="ri-share-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container text-center">
+      <h1>Lock PDF</h1>
+      <p>
+        Lock your PDF with a password easily to protect your confidential
+        documents in just a few simple steps.
+      </p>
+      <form
+        id="lock-pdf-form"
+        method="POST"
+        enctype="multipart/form-data"
+        action="/security/lock_pdf/"
+        target="hidden-iframe"
+      >
         {% csrf_token %}
-        <label for="pdf_file">Upload PDF:</label>
-        <input type="file" name="pdf_file" id="pdf_file" required><br><br>
-      
-        <label for="password">Enter Password:</label>
-        <input type="password" name="password" id="password" required><br><br>
-      
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" required><br><br>
-      
-        <button type="submit">Lock PDF</button>
+        <input
+          type="file"
+          id="pdf_file"
+          name="pdf_files"
+          accept=".pdf"
+          multiple
+          required
+          style="display: none"
+        /><br />
+        <button id="upload-button" type="button" class="btn btn-primary">
+          Select PDF Files
+        </button>
+        <div id="file-list"></div>
+        <br />
+
+        <div id="password-section" style="display: none">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            required
+            placeholder="Enter the password"
+          />
+
+          <div id="password-error-container">
+            <span id="password-error" class="error"></span><br />
+          </div>
+
+          <input
+            type="password"
+            id="confirm_password"
+            required
+            placeholder="Confirm the password"
+          />
+          <div id="password-error-container">
+            <span id="confirm-password-error" class="error"></span><br />
+          </div>
+
+          <button type="submit" id="lock-pdf-button" disabled>Lock PDF</button>
+          <button type="reset" id="reset">reset</button>
+        </div>
       </form>
-      
-      <script>
-        // Client-side validation for password and confirm password
-        const form = document.getElementById("lock-pdf-form");
-      
-        form.addEventListener("submit", (e) => {
-          const password = document.getElementById("password").value;
-          const confirmPassword = document.getElementById("confirm_password").value;
-      
-          if (password !== confirmPassword) {
-            e.preventDefault(); // Prevent form submission
-            alert("Passwords do not match. Please re-enter.");
-          }
-        });
-      </script>
-      
+
+      <iframe
+        id="hidden-iframe"
+        name="hidden-iframe"
+        style="display: none"
+      ></iframe>
+    </div>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    {% comment %} <script>
-      document
-        .getElementById("pdf-lock-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
 
-          const formData = new FormData(this);
+    <script>
+      const form = document.getElementById("lock-pdf-form");
+      const pdfInput = document.getElementById("pdf_file");
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirm_password");
+      const uploadButton = document.getElementById("upload-button");
+      const fileNameDisplay = document.getElementById("file-name-display");
+      const passwordError = document.getElementById("password-error");
+      const confirmPasswordError = document.getElementById(
+        "confirm-password-error"
+      );
+      const fileList = document.getElementById("file-list");
+      const downloadBtn = document.getElementById("download-btn");
+      const lockPdfButton = document.getElementById("lock-pdf-button");
+      const reset = document.getElementById("reset");
 
-          fetch("/security/lock_pdf/", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.error) {
-                document.getElementById("response-message").textContent =
-                  data.error;
-              } else {
-                document.getElementById("response-message").textContent =
-                  data.message;
-                const downloadLink = document.createElement("a");
-                downloadLink.href = URL.createObjectURL(
-                  new Blob([data.locked_pdf], { type: "application/pdf" })
-                );
-                downloadLink.download = "locked_pdf.pdf";
-                downloadLink.textContent = "Download Locked PDF";
-                document
-                  .getElementById("response-message")
-                  .appendChild(downloadLink);
-              }
-            })
-            .catch((error) => {
-              document.getElementById("response-message").textContent =
-                "An error occurred.";
+      const passwordSection = document.getElementById("password-section");
+      let selectedFile = null;
+
+      function validatePasswords() {
+        const passwordValue = password.value.trim();
+        const confirmPasswordValue = confirmPassword.value.trim();
+
+        if (!passwordValue || !confirmPasswordValue) {
+          // Disable button if either field is empty
+          lockPdfButton.disabled = true;
+          passwordError.textContent = "Password is required.";
+          confirmPasswordError.textContent = "Confirm password is required.";
+        } else if (passwordValue !== confirmPasswordValue) {
+          // Show error if passwords don't match
+          lockPdfButton.disabled = true;
+          confirmPasswordError.textContent = "Passwords do not match.";
+          passwordError.textContent = "";
+        } else {
+          // Enable button if passwords match
+          lockPdfButton.disabled = false;
+          confirmPasswordError.textContent = "";
+          passwordError.textContent = "";
+        }
+      }
+
+      // Add event listeners for input changes
+      password.addEventListener("input", validatePasswords);
+      confirmPassword.addEventListener("input", validatePasswords);
+
+      pdfInput.addEventListener("change", () => {
+        if (pdfInput.files.length > 0) {
+          passwordSection.style.display = "block"; // Show password section
+        }
+      });
+
+      // Validate before submission
+      form.addEventListener("submit", (e) => {
+        let valid = true;
+        // Clear previous error messages
+        passwordError.textContent = "";
+        confirmPasswordError.textContent = "";
+
+        // Check if at least one PDF is selected
+        if (!pdfInput.files.length) {
+          alert("Please select at least one PDF file.");
+          valid = false;
+        }
+
+        // Check if the password is entered
+        if (!password.value.trim()) {
+          passwordError.textContent = "Password is required.";
+          valid = false;
+        }
+
+        // Check if confirm password matches the password
+        if (password.value !== confirmPassword.value) {
+          confirmPasswordError.textContent = "Passwords do not match.";
+          valid = false;
+        }
+
+        if (!valid) {
+          e.preventDefault(); // Prevent form submission
+        }
+      });
+
+      lockPdfButton.addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent form submission
+
+        if (selectedFile) {
+          // Prompt user to enter a new file name
+          const newFileName = prompt(
+            "Enter a new name for the file:",
+            "locked-file"
+          );
+
+          if (newFileName) {
+            // Create a Blob with the file data
+            const blob = new Blob([selectedFile], { type: "application/pdf" });
+
+            // Create a download link for the file
+            const downloadUrl = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = `${newFileName.trim()}.pdf`;
+            //  a.download = newFileName; // Use the new file name
+            a.click(); // Trigger the download
+
+            // Clean up the object URL after download
+            URL.revokeObjectURL(downloadUrl);
+
+            // Optionally reset the file input and file list
+            pdfInput.value = ""; // Reset file input
+            fileList.innerHTML = ""; // Clear file list
+          }
+        } else {
+          alert("Please select a file first.");
+        }
+      });
+
+      // Trigger file selection dialog
+      uploadButton.addEventListener("click", () => pdfInput.click());
+
+      // Display selected file names with icons
+      pdfInput.addEventListener("change", (e) => {
+        fileList.innerHTML = ""; // Clear the file list display
+
+        const file = e.target.files[0];
+        if (file) {
+          selectedFile = file; // Store selected file
+          fileList.innerHTML = ""; // Clear previous file list
+        }
+
+        const files = Array.from(pdfInput.files);
+        if (files.length) {
+          files.forEach((file, index) => {
+            const fileWrapper = document.createElement("div");
+            fileWrapper.style.display = "flex";
+            fileWrapper.style.alignItems = "center";
+            fileWrapper.style.marginBottom = "5px";
+            fileWrapper.style.marginTop = "25px";
+            fileWrapper.style.justifyContent = "center";
+
+            // Create and append PDF icon
+            const fileIcon = document.createElement("img");
+            fileIcon.src =
+              "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"; // PDF icon URL
+            fileIcon.alt = "PDF Icon";
+            fileIcon.style.width = "24px";
+            fileIcon.style.marginRight = "8px";
+
+            // Create and append file name
+            const fileName = document.createElement("span");
+            fileName.textContent = file.name;
+
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "❌";
+            removeButton.style.marginLeft = "10vw";
+            removeButton.style.border = "none";
+            removeButton.style.background = "none";
+            removeButton.style.cursor = "pointer";
+            removeButton.title = "Remove this file";
+
+            removeButton.setAttribute("data-index", index);
+
+            // Remove file from display and input
+            removeButton.addEventListener("click", (event) => {
+              const fileIndex = parseInt(
+                event.target.getAttribute("data-index")
+              );
+              files.splice(fileIndex, 1); // Remove file from list
+              updateFileInput(files);
+              fileWrapper.remove(); // Remove from display
             });
-        });
-    </script> {% endcomment %}
+
+            fileWrapper.appendChild(fileIcon);
+            fileWrapper.appendChild(fileName);
+            fileWrapper.appendChild(removeButton);
+
+            // Add the wrapper to the file list
+            fileList.appendChild(fileWrapper);
+          });
+        } else {
+          fileList.textContent = "No files selected.";
+        }
+      });
+
+      function updateFileInput(files) {
+        const dataTransfer = new DataTransfer();
+        files.forEach((file) => dataTransfer.items.add(file));
+        pdfInput.files = dataTransfer.files;
+      }
+
+      // Validate password length
+      password.addEventListener("input", () => {
+        if (password.value.length < 8) {
+          passwordError.textContent =
+            "Password must be at least 8 characters long.";
+        } else {
+          passwordError.textContent = "";
+        }
+      });
+
+      reset.addEventListener("click", () => {
+        fileList.innerHTML = "";
+        passwordError.innerHTML = "";
+        confirmPasswordError.innerHTML = "";
+      });
+
+      function shareLink() {
+        const shareData = {
+          title: "File Toolkit",
+          text: "Boost your productivity with this powerful file toolkit! Convert, merge, and manage your documents effortlessly.",
+          url: "https://file-toolkit.onrender.com",
+        };
+
+        if (navigator.share) {
+          navigator
+            .share(shareData)
+            .then(() => console.log("Shared successfully!"))
+            .catch((err) => console.error("Error sharing:", err));
+        } else {
+          alert(
+            "Your browser does not support . Please copy the link manually."
+          );
+        }
+      }
+    </script>
   </body>
 </html>

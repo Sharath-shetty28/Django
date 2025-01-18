@@ -75,7 +75,7 @@ from io import BytesIO
 def lock_pdf(request):
     if request.method == 'POST':
         # Get the uploaded file and password
-        pdf_file = request.FILES.get('pdf_file')
+        pdf_file = request.FILES.get('pdf_files')
         password = request.POST.get('password')
 
         # Validate inputs
@@ -111,3 +111,7 @@ def lock_pdf(request):
 
     # Render the upload form if GET request
     return render(request, 'security/lock_pdf.html')
+
+
+
+

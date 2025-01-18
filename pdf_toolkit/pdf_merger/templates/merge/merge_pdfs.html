@@ -22,13 +22,30 @@
     rel="stylesheet"
   />
     <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "remixicon";
+      }
+      button:hover {
+        scale: 1.1;
+      }
+      button:active {
+        scale: 0.9;
+      }
+
+
       nav {
         background: repeating-linear-gradient(346deg, black, blue 100px);
         color: white;
       }
       .nav-link {
         color: white;
+        font-weight: 600;
+
       }
+
       .progress-disabled {
   background-color: #6c757d !important;
   color: white;
@@ -92,8 +109,22 @@
               aria-label="Close"
             ></button>
           </div>
+         
           <div class="offcanvas-body">
+          
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link "
+                  href="/security/lock_pdf/"
+                  role="button"
+                  
+                  aria-expanded="false"
+                >
+                  Lock PDF
+                </a>
+              </li>
+
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -148,7 +179,7 @@
               </li>
             </ul>
             <div class="d-flex mt-3 mt-lg-0">
-              <button class="btn btn-outline-light" type="submit">
+              <button class="btn btn-outline-light" type="submit" onclick="shareLink()">
                 <i class="ri-share-line"></i>
                 
               </button>
@@ -229,48 +260,17 @@
         const removeButton = document.createElement("button");
         removeButton.textContent = "❌";
         removeButton.addEventListener("click", () => {
+          event.stopPropagation();
           removeFile(fileName, fileItem);
-        });
-
-
-        const moveUpButton = document.createElement("button");
-        moveUpButton.textContent = "⬆";
-        moveUpButton.style.marginLeft = "5px";
-        moveUpButton.addEventListener("click", () => {
-          moveFileUp(fileItem);
-        });
-      
-        const moveDownButton = document.createElement("button");
-        moveDownButton.textContent = "⬇";
-        moveDownButton.style.marginLeft = "5px";
-        moveDownButton.addEventListener("click", () => {
-          moveFileDown(fileItem);
         });
 
         fileItem.appendChild(fileIcon);
         fileItem.appendChild(fileNameSpan);
         fileItem.appendChild(removeButton);
-        
-        fileItem.appendChild(moveUpButton);
-  fileItem.appendChild(moveDownButton);
         fileList.appendChild(fileItem);
+
+      
       }
-
-
-
-      function moveFileUp(fileItem) {
-  const prevSibling = fileItem.previousElementSibling;
-  if (prevSibling) {
-    fileList.insertBefore(fileItem, prevSibling);
-  }
-}
-
-function moveFileDown(fileItem) {
-  const nextSibling = fileItem.nextElementSibling;
-  if (nextSibling) {
-    fileList.insertBefore(nextSibling, fileItem);
-  }
-}
 
       // Remove file from the list
       function removeFile(fileName, fileItem) {
@@ -280,8 +280,6 @@ function moveFileDown(fileItem) {
         // Update button visibility
         updateMergeButtonState();
       }
-
-   
 
       // Update the state of the merge button
       function updateMergeButtonState() {
@@ -365,8 +363,8 @@ function moveFileDown(fileItem) {
         const interval = setInterval(() => {
           if (progress < 100) {
             progress += 10; // Increment progress
-            progressBar.style.width = progress + "%"; // Update the width of the progress bar
-            progressBar.textContent = progress + "%"; // Update the progress text
+            progressBar.style.width = progress + "%"; 
+            progressBar.textContent = progress + "%"; 
           } else {
             clearInterval(interval); 
             progressBar.textContent = "Completed"; // Show completed text
@@ -387,13 +385,6 @@ function moveFileDown(fileItem) {
                 throw new Error("Failed to merge PDFs.");
               })
               .then((blob) => {
-              //  {% comment %} const url = URL.createObjectURL(blob);
-              //  const mergedFileName = `${firstFileName}_merged.pdf`;
-               // const downloadLink = document.getElementById("download-link");
-               // downloadLink.href = url;
-               // downloadLink.download = mergedFileName; {% endcomment %}
-      
-                // Show the download section after merging
                 downloadUrl = URL.createObjectURL(blob);
                 downloadSection.style.display = "block";
               })
@@ -447,6 +438,26 @@ function moveFileDown(fileItem) {
         progressBar.textContent = "0%";
         progressBar.style.backgroundColor = "#007bff"; // Reset color to blue
       });
+
+
+      function shareLink() {
+        const shareData = {
+          title: "File Toolkit",
+          text: "Boost your productivity with this powerful file toolkit! Convert, merge, and manage your documents effortlessly.",
+          url: "https://file-toolkit.onrender.com",
+        };
+
+        if (navigator.share) {
+          navigator
+            .share(shareData)
+            .then(() => console.log("Shared successfully!"))
+            .catch((err) => console.error("Error sharing:", err));
+        } else {
+          alert(
+            "Your browser does not support . Please copy the link manually."
+          );
+        }
+      }
     </script>
   </body>
 </html>
