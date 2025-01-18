@@ -4,7 +4,9 @@
 A powerful and user-friendly file management tool that simplifies your document handling tasks. This project enables users to:  
 - **Convert Word to PDF**  
 - **Merge Word documents**
-- **Merge PDF documents**  
+- **Merge PDF documents**
+- **Lock PDF using password**
+- **Seamless renaming of files**
 - And much more!  
 
 Built using modern web technologies and designed to deliver a seamless experience across devices.  
@@ -32,10 +34,10 @@ Built using modern web technologies and designed to deliver a seamless experienc
 ---
 
 ## 📷 Screenshots  
-![image](https://github.com/user-attachments/assets/f9fa71a7-519c-4922-9754-4c3683704696)
-![image](https://github.com/user-attachments/assets/219bcc4f-a10c-419b-9e17-32c4fa99406d)
-![image](https://github.com/user-attachments/assets/04ba8b93-c221-451d-83ad-5d303f8fefb1)
-![image](https://github.com/user-attachments/assets/7b42e86b-5d61-4c68-b716-8c19de3826ef)
+![image](https://github.com/user-attachments/assets/829a5541-640c-480b-b4a7-06a19babf9a9)
+![image](https://github.com/user-attachments/assets/7582e2e9-e331-4516-83b3-c2c89e403797)
+![image](https://github.com/user-attachments/assets/2140d12f-d16e-4f99-be34-f6ec5ac62f5a)
+
 
 ---
 
