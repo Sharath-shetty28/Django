@@ -35,7 +35,6 @@ Built using modern web technologies and designed to deliver a seamless experienc
 ![image](https://github.com/user-attachments/assets/829a5541-640c-480b-b4a7-06a19babf9a9)
 ![image](https://github.com/user-attachments/assets/7582e2e9-e331-4516-83b3-c2c89e403797)
 ![image](https://github.com/user-attachments/assets/2140d12f-d16e-4f99-be34-f6ec5ac62f5a)
-![image](https://github.com/user-attachments/assets/e452a987-a423-4a15-bc9c-71c0c68267bc)
 
 
 ---
